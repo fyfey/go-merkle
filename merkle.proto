@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package merkle;
+
+option go_package = "github.com/fyfey/internal/proto";
+
+service Merkle {
+    rpc GetPart (PartRequest) returns (Part) {}
+    rpc GetMetadata (Empty) returns (Metadata) {}
+}
+
+message Empty {}
+
+message Metadata {
+    string filename = 1;
+    int32 parts = 2;
+    int32 chunkSize = 3;
+    string algo = 4;
+}
+
+message Proof {
+    message ProofNode {
+        enum Side {
+            LEFT = 0;
+            RIGHT = 1;
+        }
+        Side side = 1;
+        bytes hash = 2;
+    }
+    repeated ProofNode nodes = 1;
+    bytes merkleRoot = 2;
+}
+
+message Part {
+    int32 idx = 1;
+    Proof proof = 2;
+    bytes data = 3;
+}
+
+message PartRequest {
+    int32 idx = 1;
+}
