@@ -2,11 +2,17 @@ package merkle
 
 import (
 	"bytes"
+	"encoding/hex"
+	"fmt"
 )
 
 type ProofNode struct {
 	Left bool
 	Hash []byte
+}
+
+func (n ProofNode) String() string {
+	return fmt.Sprintf("Left: %v, Hash: %s", n.Left, hex.EncodeToString(n.Hash))
 }
 
 type MerkleProof []ProofNode

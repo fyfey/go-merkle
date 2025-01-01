@@ -59,20 +59,23 @@ func NewTree(opts ...TreeOpt) *Tree {
 
 func ReadTree(r io.Reader, chunkSize int) (*Tree, error) {
 	if chunkSize <= 0 {
-		return nil, errors.New("Invalid chunk size. Must be greater than 0")
+		return nil, errors.New("invalid chunk size. Must be greater than 0")
 	}
 
 	buf := make([]byte, chunkSize)
 	Tree := NewTree()
 	for {
-		_, err := r.Read(buf)
+		read, err := r.Read(buf)
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
 			return nil, err
 		}
-		Tree.Add(buf)
+		newData := make([]byte, read)
+		copy(newData, buf[:read])
+
+		Tree.Add(newData)
 	}
 	Tree.Build()
 
@@ -98,6 +101,11 @@ func (t *Tree) AddRaw(hash []byte) *Tree {
 // GetLeaf returns the leaf node at the given index
 func (t *Tree) GetLeaf(index int) *Node {
 	return t.data[0][index]
+}
+
+// GetHeight returns the nodes at the given height
+func (t *Tree) GetHeight(index int) []*Node {
+	return t.data[index]
 }
 
 // GetLeaves returns a slice of leaf nodes

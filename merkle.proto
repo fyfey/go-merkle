@@ -28,7 +28,6 @@ message Proof {
         bytes hash = 2;
     }
     repeated ProofNode nodes = 1;
-    bytes merkleRoot = 2;
 }
 
 message Part {

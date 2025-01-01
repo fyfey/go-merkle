@@ -6,8 +6,10 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 
 	"github.com/fyfey/merkle/internal/proto"
+	"github.com/fyfey/merkle/internal/server"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 )
@@ -22,29 +24,29 @@ func main() {
 		Use:   "merkleserver",
 		Short: "File server using merkle",
 		Run: func(cmd *cobra.Command, args []string) {
-			file, err := os.Stat(filename)
+			file, err := os.Stat(filepath.Join("out", filename))
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			r, err := os.Open(filename)
+			r, err := os.Open(filepath.Join("out", filename))
 			if err != nil {
 				log.Fatal(err)
 			}
 			defer r.Close()
-			s := NewServer(c, 8080, r, chunkSize, filename)
+			s := server.NewServer(c, 8080, r, chunkSize, filename)
 			s.Start()
 
 			log.Printf("file %s size %d\n", filename, file.Size())
 
-			lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
+			lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.Port))
 			if err != nil {
 				log.Fatalf("failed to listen: %v", err)
 			}
 			grpcServer := grpc.NewServer()
 			proto.RegisterMerkleServer(grpcServer, s)
 
-			log.Printf("Server listening on 0.0.0.0:%d\n", s.port)
+			log.Printf("Server listening on 0.0.0.0:%d\n", s.Port)
 			grpcServer.Serve(lis)
 		},
 	}

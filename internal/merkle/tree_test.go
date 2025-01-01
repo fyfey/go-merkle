@@ -14,7 +14,7 @@ const (
 	HashD      = "18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4"
 	HashE      = "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"
 	Root       = "d71f8983ad4ee170f8129f1ebcdd7440be7798d8e1c80420bf11f1eced610dba"
-	ReaderRoot = "685fbe0334d626fa85ad0265f37be1a848151e7ef2703d72affa8d9a6d9df6d3"
+	ReaderRoot = "75894b4ffb30aa65e4624b84611dd47f17ebf8f4caeeb9a8109bd851506ae170"
 )
 
 func TestTree(t *testing.T) {
@@ -69,7 +69,7 @@ func TestTree(t *testing.T) {
 }
 
 func TestReader(t *testing.T) {
-	r, err := os.Open("../../arrival_in_nara.txt")
+	r, err := os.Open("../../out/arrival_in_nara.txt")
 	if err != nil {
 		t.Fatalf("Expected nil, got %s", err)
 	}

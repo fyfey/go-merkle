@@ -6,6 +6,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/fyfey/merkle/internal/merkle"
@@ -33,7 +34,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	file, err := os.Create(metadata.Filename)
+	file, err := os.Create(filepath.Join("in", metadata.Filename))
 	if err != nil {
 		log.Fatalf("Failed to open file")
 	}
@@ -42,17 +43,16 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(int(metadata.Parts))
 	for i := 0; i < int(metadata.Parts); i++ {
-		func() {
+		go func() {
 			part, err := client.GetPart(context.Background(), &proto.PartRequest{Idx: int32(i)})
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("got part %d: %v\n", i, part)
-			if !prove(part.Proof, part.Data, hasher) {
+			if !prove(part.Proof, hasher.Hash(part.Data), hasher) {
 				log.Fatalf("Part %d failed merkle proof check\n", part.Idx)
 			}
 			offset := int64(int(part.Idx) * int(metadata.ChunkSize))
-			log.Printf("Writing %d bytes @ %d - %x", len(part.Data), offset, part.Data)
+			log.Printf("Writing %d bytes @ %d", len(part.Data), offset)
 			_, err = file.WriteAt(part.Data, offset)
 			if err != nil {
 				log.Fatal("Failed writing data to file")
@@ -64,15 +64,12 @@ func main() {
 }
 
 func prove(p *proto.Proof, ha []byte, hasher merkle.Hasher) bool {
-	rootHash := p.MerkleRoot
-	log.Printf("rootHash: %x\n", rootHash)
-	for i := 0; i < len(p.Nodes); i++ {
-		if p.Nodes[i].Side == proto.Proof_ProofNode_RIGHT {
+	rootHash := p.Nodes[len(p.Nodes)-1].Hash
+	for i := 0; i < len(p.Nodes)-1; i++ {
+		if p.Nodes[i].Side == proto.Proof_ProofNode_LEFT {
 			ha = hasher.Hash(append(ha, p.Nodes[i].Hash...))
-			log.Printf("right; ha: %x\n", ha)
 		} else {
 			ha = hasher.Hash(append(p.Nodes[i].Hash, ha...))
-			log.Printf("left; ha: %x\n", ha)
 		}
 	}
 
