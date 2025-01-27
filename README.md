@@ -1,5 +1,7 @@
 # Go Merkle Tree
 
+![Example](https://github.com/fyfey/go-merkle/actions/workflows/go.yml/badge.svg)
+
 This is a simple implementation of a Merkle Tree in Go.
 
 There's a simple server/client transfer protocol that allows
