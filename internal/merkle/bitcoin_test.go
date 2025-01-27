@@ -6,7 +6,9 @@ import (
 	"testing"
 )
 
-func TestBitcoinBlock1000(t *testing.T) {
+func TestBitcoinBlock10000(t *testing.T) {
+
+	// https://www.blockchain.com/explorer/blocks/btc/100000
 
 	// Note that all bitcoin txIDs and roots are stored in little-endian format,
 	// so we need to reverse them before using them
@@ -47,7 +49,9 @@ func TestBitcoinBlock1000(t *testing.T) {
 }
 
 // Adding this test to test odd number of leaves
-func TestBitcoinBlock1018(t *testing.T) {
+func TestBitcoinBlock100018(t *testing.T) {
+
+	// https://www.blockchain.com/explorer/blocks/btc/100018
 
 	txIDs := []string{
 		"a335b243f5e343049fccac2cf4d70578ad705831940d3eef48360b0ea3829ed4",
