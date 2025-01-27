@@ -1,4 +1,4 @@
-module github.com/fyfey/merkle
+module github.com/fyfey/go-merkle
 
 go 1.21.6
 

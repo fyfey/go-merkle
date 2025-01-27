@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/fyfey/merkle/internal/proto"
-	"github.com/fyfey/merkle/internal/server"
+	"github.com/fyfey/go-merkle/internal/proto"
+	"github.com/fyfey/go-merkle/internal/server"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 )
