@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fyfey/go-merkle/internal/merkle"
 	"github.com/fyfey/go-merkle/internal/proto"
+	"github.com/fyfey/go-merkle/pkg/merkle"
 	"github.com/gosuri/uilive"
 	"google.golang.org/grpc"
 )
