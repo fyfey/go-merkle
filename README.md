@@ -1,6 +1,7 @@
 # Go Merkle Tree
 
 ![Example](https://github.com/fyfey/go-merkle/actions/workflows/go.yml/badge.svg)
+![Go Report Card](https://goreportcard.com/badge/github.com/fyfey/go-merkle)
 ![Coverage Badge](https://raw.githubusercontent.com/wiki/fyfey/go-merkle/coverage.svg)
 
 This is a simple implementation of a Merkle Tree in Go.
