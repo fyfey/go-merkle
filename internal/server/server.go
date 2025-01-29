@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fyfey/go-merkle/pkg/merkle"
 	"github.com/fyfey/go-merkle/internal/proto"
+	"github.com/fyfey/go-merkle/pkg/merkle"
 )
 
 type Server struct {

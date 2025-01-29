@@ -134,12 +134,9 @@ func (t *Tree) Build() error {
 		return errors.New("No nodes to build")
 	}
 
-	var rootNode *Node
-	rootNode = nil
 	height := 0
-	for rootNode == nil {
+	for {
 		if len(nodes[height]) == 1 {
-			rootNode = nodes[height][0]
 			break
 		}
 		nextHeight := make([]*Node, 0)
@@ -148,13 +145,15 @@ func (t *Tree) Build() error {
 			nextHeight = append(nextHeight, newNode)
 		}
 		if len(nodes[height])%2 != 0 {
-			if t.oddLeafStrategy == DuplicateOddLeaves {
+			switch t.oddLeafStrategy {
+			case DuplicateOddLeaves:
 				// create a parent with the same node as both children
 				newNode := NewParent(nodes[height][len(nodes[height])-1], nodes[height][len(nodes[height])-1])
 				nextHeight = append(nextHeight, newNode)
-			}
-			if t.oddLeafStrategy == IgnoreOddLeaves {
+			case IgnoreOddLeaves:
 				nextHeight = append(nextHeight, nodes[height][len(nodes[height])-1])
+			default:
+				return errors.New("Invalid odd leaf strategy")
 			}
 		}
 		nodes = append(nodes, nextHeight)
